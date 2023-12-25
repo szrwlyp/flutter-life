@@ -1,0 +1,174 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import "../../components/guide_page_comp.dart";
+
+class AccountNumberLogin extends StatefulWidget {
+  const AccountNumberLogin({super.key});
+
+  @override
+  State<AccountNumberLogin> createState() => _AccountNumberLoginState();
+}
+
+class _AccountNumberLoginState extends State<AccountNumberLogin> {
+  // 用户名
+  final TextEditingController _unameController = TextEditingController();
+
+  // 密码
+  final TextEditingController _pwd = TextEditingController();
+
+  void onSubmit() {
+    print(_unameController.text);
+    print(_pwd.text);
+
+    Navigator.of(context).pushNamedAndRemoveUntil('/index', (route) => false);
+  }
+
+  void onChangeTap() {
+    print('免密登录');
+    Navigator.pushReplacementNamed(context, '/phone_login');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+        child: ConstrainedBox(
+            constraints: const BoxConstraints.expand(),
+            child: Stack(
+              alignment: Alignment.topLeft,
+              fit: StackFit.expand,
+              children: [
+                Positioned(
+                    left: -170,
+                    top: -170,
+                    child: Image(
+                      width: ScreenUtil().setWidth(484),
+                      height: ScreenUtil().setHeight(479),
+                      image: const AssetImage(
+                          'lib/assets/images/login_dayuan_bg.png'),
+                    )),
+                Positioned(
+                    bottom: -70,
+                    right: -70,
+                    child: Image(
+                      width: ScreenUtil().setWidth(231),
+                      height: ScreenUtil().setHeight(229),
+                      image: const AssetImage(
+                          'lib/assets/images/login_xiaoyuan_bg.png'),
+                    )),
+                Column(
+                  children: [
+                    GuideTopNavigator(
+                      textContent: '免密登录',
+                      onPressed: onChangeTap,
+                    ),
+                    Padding(
+                        padding: EdgeInsets.only(
+                            left: 33, top: ScreenUtil().setHeight(100)),
+                        child: Row(
+                          children: [
+                            Text(
+                              '欢迎登录',
+                              style: TextStyle(
+                                  fontSize: ScreenUtil().setSp(33),
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ],
+                        )),
+                    Padding(
+                        padding: EdgeInsets.only(
+                            top: ScreenUtil().setHeight(70),
+                            left: 33,
+                            right: 33),
+                        child: Column(
+                          children: [
+                            TextField(
+                                controller: _unameController,
+                                cursorColor: const Color(0xFFFF5678),
+                                decoration: InputDecoration(
+                                    hintText: '输入手机号/用户名',
+                                    hintStyle: TextStyle(
+                                        color: const Color.fromRGBO(
+                                            27, 27, 33, 0.3),
+                                        fontSize: ScreenUtil().setSp(14)),
+                                    enabledBorder: const UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 0,
+                                          color:
+                                              Color.fromRGBO(27, 27, 33, 0.3)),
+                                    ),
+                                    focusedBorder: const UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 0,
+                                            color: Color(0xFFFF5678))))),
+                            Padding(
+                                padding: EdgeInsets.only(
+                                    top: ScreenUtil().setHeight(40),
+                                    bottom: ScreenUtil().setHeight(44)),
+                                child: TextField(
+                                  controller: _pwd,
+                                  cursorColor: const Color(0xFFFF5678),
+                                  obscureText: true,
+                                  decoration: InputDecoration(
+                                      hintText: '输入密码',
+                                      hintStyle: TextStyle(
+                                          color: const Color.fromRGBO(
+                                              27, 27, 33, 0.3),
+                                          fontSize: ScreenUtil().setSp(14)),
+                                      enabledBorder: const UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              width: 0,
+                                              color: Color.fromRGBO(
+                                                  27, 27, 27, 0.3))),
+                                      focusedBorder: const UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              width: 0,
+                                              color: Color(0xFFFF5678)))),
+                                )),
+                            Opacity(
+                                opacity: 1,
+                                child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        foregroundColor: Colors.white,
+                                        backgroundColor: const Color.fromRGBO(
+                                            255, 86, 120, 1),
+                                        fixedSize: Size(
+                                            ScreenUtil().setWidth(331),
+                                            ScreenUtil().setHeight(52))),
+                                    onPressed: onSubmit,
+                                    child: const Text('登录'))),
+                            Padding(
+                                padding: EdgeInsets.only(
+                                    top: ScreenUtil().setHeight(100),
+                                    bottom: ScreenUtil().setHeight(14)),
+                                child: Text(
+                                  'or',
+                                  style: TextStyle(
+                                      color: const Color.fromRGBO(
+                                          27, 27, 33, 0.25),
+                                      fontSize: ScreenUtil().setSp(16)),
+                                )),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text('其他登录方式',
+                                    style: TextStyle(
+                                        color: const Color(0xFF5c5b5b),
+                                        fontSize: ScreenUtil().setSp(12))),
+                                const Padding(
+                                    padding: EdgeInsets.only(left: 8, top: 3),
+                                    child: Image(
+                                        image: AssetImage(
+                                            'lib/assets/images/right_arrow.png'),
+                                        width: 6,
+                                        height: 6))
+                              ],
+                            )
+                          ],
+                        ))
+                  ],
+                )
+              ],
+            )));
+  }
+}

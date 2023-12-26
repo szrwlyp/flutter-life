@@ -1,0 +1,12 @@
+.uni-data-pickerview {
+  &.selected-area {
+    /* #ifndef MP-ALIPAY */
+    flex: 1;
+    /* #endif */
+    overflow: hidden;
+    /* #ifndef APP-NVUE */
+    display: flex;
+    /* #endif */
+    flex-direction: row;
+  }
+}

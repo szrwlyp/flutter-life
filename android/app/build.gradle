@@ -49,6 +49,9 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        ndk {
+            abiFilters 'x86','armeabi-v7a',"arm64-v8a" //不支持armeabi
+        }
     }
 
     buildTypes {
@@ -58,10 +61,37 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    //此处配置必须添加 否则无法正确运行
+    aaptOptions {
+        additionalParameters '--auto-add-overlay'
+        //noCompress 'foo', 'bar'
+        ignoreAssetsPattern "!.svn:!.git:.*:!CVS:!thumbs.db:!picasa.ini:!*.scc:*~"
+    }
 }
 
 flutter {
     source '../..'
 }
 
-dependencies {}
+//导入aar需要的配置
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    //导入SDK相关依赖jar、aar
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.aar'], dir: 'libs')
+    //必须添加的依赖
+    implementation 'androidx.recyclerview:recyclerview:1.0.0' //必须集成，android 自带recyclerview支持
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0' //必须集成，androidx support支持
+    implementation 'androidx.appcompat:appcompat:1.0.0' //必须集成，androidx appcompat支持
+    implementation 'com.alibaba:fastjson:1.2.83' //必须集成，fastjson功能需要
+    implementation 'com.facebook.fresco:fresco:2.5.0'//必须集成，图片加载需要
+    implementation 'com.facebook.fresco:animated-gif:2.5.0'//必须集成，图片加载需要
+    implementation 'com.github.bumptech.glide:glide:4.9.0'//必须集成，图片加载需要
+    implementation 'androidx.webkit:webkit:1.3.0' //3.6.15版本之后 必须集成，用来支持暗黑模式
+}

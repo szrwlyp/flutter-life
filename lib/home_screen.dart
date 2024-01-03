@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart'; // material风格
 import 'package:flutter/cupertino.dart'; // ios风格
 import 'package:life_app/views/home/index.dart';
+import 'package:life_app/views/message/index.dart';
+import 'package:life_app/views/me/index.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:remixicon/remixicon.dart';
+import "package:life_app/widgets/will_pop_scope_route.dart";
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,24 +14,38 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  // PageView 控制
+  final PageController _pageViewController = PageController();
+  // 当前页下标
   int _selectedIndex = 0;
 
-  static const List _widgetOptions = [HomePage()];
+  // 页面
+  final List<Widget> _pages = [
+    const HomePage(),
+    const MessagePage(),
+    const MessagePage(),
+    const MePage()
+  ];
 
-  static const List<BottomNavigationBarItem> _itemArr = [
-    BottomNavigationBarItem(icon: Icon(CupertinoIcons.home), label: '首页'),
-    BottomNavigationBarItem(icon: Icon(CupertinoIcons.search), label: '消息'),
-    BottomNavigationBarItem(
+  final List<BottomNavigationBarItem> _itemArr = [
+    const BottomNavigationBarItem(icon: Icon(CupertinoIcons.home), label: '首页'),
+    const BottomNavigationBarItem(
+        icon: Icon(CupertinoIcons.search), label: '消息'),
+    const BottomNavigationBarItem(
         icon: Icon(CupertinoIcons.shopping_cart), label: '购物车'),
-    BottomNavigationBarItem(
+    const BottomNavigationBarItem(
         icon: Icon(CupertinoIcons.profile_circled), label: '会员中心')
   ];
-// BottomNavigationBarItem(icon: Icon(Icons.home), label: '首页'),
-//           BottomNavigationBarItem(icon: Icon(Icons.favorite), label: '收藏'),
-//           BottomNavigationBarItem(icon: Icon(Icons.settings), label: '设置'),
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void _onItemTapped(int index) {
+    print(index);
+
+    _pageViewController.jumpToPage(index);
     setState(() {
       _selectedIndex = index;
     });
@@ -35,11 +53,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScopeRoute(
+        child: Scaffold(
       // IndexedStack 缓存页面
-      body: IndexedStack(
-          index: _selectedIndex, children: const [..._widgetOptions]),
-      bottomNavigationBar: const CustomBottomNavigationBar(),
+      // body: IndexedStack(index: _selectedIndex, children: [..._pages]),
+      body: PageView(
+        controller: _pageViewController,
+        physics: const NeverScrollableScrollPhysics(),
+        children: _pages,
+      ),
+      // 自定义底部导航栏
+      bottomNavigationBar: CustomBottomNavigationBar(
+          onTap: _onItemTapped, currentIndex: _selectedIndex, pages: _pages),
+      // 框架自带底部导航栏
       // bottomNavigationBar: BottomNavigationBar(
       //   // 当提供超过 3 个 BottomNavigationBar 项目时，如果未指定类型，则根据https://docs.flutter.io/flutter/material/BottomNavigationBar/BottomNavigationBar.html更改为 BottomNavigationBarType.shifting
       //   type: BottomNavigationBarType.fixed,
@@ -51,12 +77,22 @@ class _HomeScreenState extends State<HomeScreen> {
       //   unselectedFontSize: 13,
       //   selectedItemColor: const Color(0xffff5678),
       // ),
-    );
+    ));
   }
 }
 
 class CustomBottomNavigationBar extends StatefulWidget {
-  const CustomBottomNavigationBar({super.key});
+  const CustomBottomNavigationBar(
+      {super.key,
+      required this.onTap,
+      this.currentIndex = 0,
+      this.pages = const []});
+
+  final Function(int) onTap;
+
+  final int currentIndex;
+
+  final List<Widget> pages;
 
   @override
   State<CustomBottomNavigationBar> createState() =>
@@ -70,108 +106,99 @@ class _CustomBottomNavigationBar extends State<CustomBottomNavigationBar>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 5, vsync: this);
+    _tabController = TabController(
+        initialIndex: widget.currentIndex,
+        length: widget.pages.length,
+        vsync: this);
+  }
+
+  @override
+  void dispose() {
+    // Tab控制
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // return BottomAppBar(
-    //     shape: const CircularNotchedRectangle(),
-    //     child: Row(
-    //       mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //       children: [
-    //         IconButton(
-    //           icon: const Icon(Icons.home),
-    //           onPressed: () {},
-    //         ),
-    //         IconButton(
-    //           icon: const Icon(Icons.business),
-    //           onPressed: () {},
-    //         ),
-    //         const SizedBox(width: 40),
-    //         IconButton(
-    //           icon: const Icon(Icons.school),
-    //           onPressed: () {},
-    //         ),
-    //       ],
-    //     ));
     return Container(
-        // height: 56,
+        height: 56,
         decoration: const BoxDecoration(
-            border:
-                Border(top: BorderSide(color: Color(0xffdcdcdc), width: 1))),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12, // 阴影颜色
+              offset: Offset(0.0, 10), // 阴影偏移量（沿x轴和y轴）
+              blurRadius: 2, // 模糊半径，决定阴影的扩散范围
+              spreadRadius: 10, // 扩展半径，正值会使阴影扩大，负值则会收缩
+            ),
+          ],
+          // border:
+          //     Border(top: BorderSide(color: Color(0xffdcdcdc), width: 1))
+        ),
         child: TabBar(
           controller: _tabController,
           indicator: const BoxDecoration(),
           labelColor: const Color(0xffff5678),
+          enableFeedback: true,
+          onTap: widget.onTap,
           tabs: const [
             Tab(
+              height: double.infinity,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Icon(CupertinoIcons.home),
-                  // Image(
-                  //     width: 24,
-                  //     height: 24,
-                  //     image: AssetImage(
-                  //         'lib/assets/images/2x/home_bar_icon@2x.png')),
-                  Text(
-                    '首页',
-                    style: TextStyle(fontSize: 14, height: 1),
-                  )
+                  // Icon(Remix.home_line),
+                  // Text(
+                  //   '首页',
+                  //   style: TextStyle(fontSize: 14, height: 1.1),
+                  // )
                 ],
               ),
             ),
             Tab(
+              height: double.infinity,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Icon(CupertinoIcons.search),
-                  // Image(
-                  //     width: 24,
-                  //     height: 24,
-                  //     image: AssetImage(
-                  //         'lib/assets/images/2x/home_bar_icon@2x.png')),
-                  Text(
-                    '消息',
-                    style: TextStyle(fontSize: 14, height: 1),
-                  )
+                  Icon(CupertinoIcons.bubble_left),
+                  // Text(
+                  //   '消息',
+                  //   style: TextStyle(fontSize: 14, height: 1),
+                  // )
                 ],
               ),
             ),
             // SizedBox(width: 40),
-            Tab(text: '首页'),
-            Tab(text: '首页')
+            Tab(
+              height: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(Remix.vidicon_line),
+                  // Text(
+                  //   '视频',
+                  //   style: TextStyle(fontSize: 14, height: 1),
+                  // )
+                ],
+              ),
+            ),
+            Tab(
+              height: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(Remix.user_3_line),
+                  // Text('我的', style: TextStyle(fontSize: 14, height: 1))
+                ],
+              ),
+            )
           ],
         ));
-    // return Material(
-    //     color: Colors.white,
-    //     shape: const BorderDirectional(
-    //         top: BorderSide(color: Colors.red, width: 1)),
-    //     child: TabBar(
-    //       controller: _tabController,
-    //       indicator: const BoxDecoration(),
-    //       labelColor: const Color(0xffff5678),
-    //       tabs: const [
-    //         Tab(
-    //           child: Column(
-    //             mainAxisAlignment: MainAxisAlignment.center,
-    //             crossAxisAlignment: CrossAxisAlignment.center,
-    //             children: [
-    //               Image(
-    //                   image: AssetImage(
-    //                       'lib/assets/images/2x/home_bar_icon@2x.png')),
-    //               Text('首页')
-    //             ],
-    //           ),
-    //         ),
-    //         Tab(text: '首页'),
-    //         // SizedBox(width: 40),
-    //         Tab(text: '首页'),
-    //         Tab(text: '首页')
-    //       ],
-    //     ));
   }
 }

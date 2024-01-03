@@ -40,6 +40,10 @@ dependencies:
   fluro: ^2.0.5
   # Dialog
   flutter_smart_dialog: ^4.9.5+2
+  # Remixicon
+  remixicon: ^1.0.0
+  # 虚线边框
+  dotted_border: ^2.0.0+3
 
 dev_dependencies:
   flutter_test:

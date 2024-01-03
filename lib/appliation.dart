@@ -15,15 +15,14 @@ class Application extends StatelessWidget {
         builder: (context, child) {
           return MaterialApp(
             theme: ThemeData(
-              canvasColor: Colors.white,
-              scaffoldBackgroundColor: Colors.white,
-              // 去除TabBar底部线条
-              tabBarTheme: const TabBarTheme(dividerColor: Colors.transparent),
-
-              // primaryColor: Colors.white,
-              // highlightColor: Colors.white,
-              // splashColor: Colors.white
-            ),
+                canvasColor: Colors.white,
+                scaffoldBackgroundColor: Colors.white,
+                // 去除TabBar底部线条
+                tabBarTheme:
+                    const TabBarTheme(dividerColor: Colors.transparent),
+                primaryColor: Colors.white,
+                highlightColor: Colors.white,
+                splashColor: Colors.white),
             title: '生活社区',
             initialRoute: AppRouter.guidePage1,
             onGenerateRoute: AppRouter.onGenerateRoute,

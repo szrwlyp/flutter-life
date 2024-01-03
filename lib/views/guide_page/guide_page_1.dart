@@ -18,7 +18,6 @@ class _GuidePage1State extends State<GuidePage1> {
     super.initState();
   }
 
-  DateTime? lastPressedAt; //上次点击时间
   @override
   Widget build(BuildContext context) {
     return Material(

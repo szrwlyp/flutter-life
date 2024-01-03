@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import "../../components/guide_page_comp.dart";
+import "package:life_app/components/guide_page_comp.dart";
+import "package:life_app/components/login.dart";
+import "package:life_app/routes.dart";
 
 class PhoneLogin extends StatefulWidget {
   const PhoneLogin({super.key});
@@ -20,12 +22,12 @@ class _PhoneLoginState extends State<PhoneLogin> {
 
   void onSubmit() {
     Map<String, String> args = {'phoneNumber': phoneNumber};
-    Navigator.of(context).pushNamed('/phone_code', arguments: args);
+    Navigator.of(context).pushNamed(AppRouter.phoneCode, arguments: args);
   }
 
   void onChangeTap() {
     print('免密登录');
-    Navigator.pushReplacementNamed(context, '/account_number_login');
+    Navigator.pushReplacementNamed(context, AppRouter.accountNumberLogin);
   }
 
   @override
@@ -37,54 +39,40 @@ class _PhoneLoginState extends State<PhoneLogin> {
               alignment: Alignment.topLeft,
               fit: StackFit.expand,
               children: [
-                Positioned(
-                    left: -170,
-                    top: -170,
-                    child: Image(
-                      width: ScreenUtil().setWidth(484),
-                      height: ScreenUtil().setHeight(479),
-                      image: const AssetImage(
-                          'lib/assets/images/login_dayuan_bg.png'),
-                    )),
-                Positioned(
-                    bottom: -70,
-                    right: -70,
-                    child: Image(
-                      width: ScreenUtil().setWidth(231),
-                      height: ScreenUtil().setHeight(229),
-                      image: const AssetImage(
-                          'lib/assets/images/login_xiaoyuan_bg.png'),
-                    )),
+                // Positioned(
+                //     left: -170,
+                //     top: -170,
+                //     child: Image(
+                //       width: 484.w,
+                //       height: 479.h,
+                //       image: const AssetImage(
+                //           'lib/assets/images/login_dayuan_bg.png'),
+                //     )),
+                const LeftTopBackground(),
+                const RightBottomBackground(),
                 Column(
                   children: [
                     GuideTopNavigator(
-                      textContent: '密码登录',
-                      onPressed: onChangeTap,
-                    ),
+                        textContent: '密码登录', onPressed: onChangeTap, top: 50),
                     Padding(
-                        padding: EdgeInsets.only(
-                            left: 33, top: ScreenUtil().setHeight(100)),
+                        padding: EdgeInsets.only(left: 33, top: 100.h),
                         child: Row(
                           children: [
                             Text(
                               '一键登录',
                               style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(33),
-                                  fontWeight: FontWeight.w700),
+                                  fontSize: 33.sp, fontWeight: FontWeight.w700),
                             ),
                           ],
                         )),
                     Padding(
-                        padding: EdgeInsets.only(
-                            top: ScreenUtil().setHeight(70),
-                            left: 33,
-                            right: 33),
+                        padding:
+                            EdgeInsets.only(top: 70.h, left: 33, right: 33),
                         child: Column(
                           children: [
                             Padding(
-                                padding: EdgeInsets.only(
-                                    top: ScreenUtil().setHeight(100),
-                                    bottom: ScreenUtil().setHeight(32)),
+                                padding:
+                                    EdgeInsets.only(top: 100.h, bottom: 32.h),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -93,7 +81,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                                       style: TextStyle(
                                           color: const Color(0xff1b1b21),
                                           fontWeight: FontWeight.w700,
-                                          fontSize: ScreenUtil().setSp(22)),
+                                          fontSize: 22.sp),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(left: 10),
@@ -102,7 +90,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                                         style: TextStyle(
                                             color: const Color(0xff1b1b21),
                                             fontWeight: FontWeight.w700,
-                                            fontSize: ScreenUtil().setSp(22)),
+                                            fontSize: 22.sp),
                                       ),
                                     )
                                   ],
@@ -114,21 +102,18 @@ class _PhoneLoginState extends State<PhoneLogin> {
                                         foregroundColor: Colors.white,
                                         backgroundColor: const Color.fromRGBO(
                                             255, 86, 120, 1),
-                                        fixedSize: Size(
-                                            ScreenUtil().setWidth(331),
-                                            ScreenUtil().setHeight(52))),
+                                        fixedSize: Size(331.w, 52.h)),
                                     onPressed: onSubmit,
                                     child: const Text('获取验证码'))),
                             Padding(
-                                padding: EdgeInsets.only(
-                                    top: ScreenUtil().setHeight(100),
-                                    bottom: ScreenUtil().setHeight(14)),
+                                padding:
+                                    EdgeInsets.only(top: 100.h, bottom: 14.h),
                                 child: Text(
                                   'or',
                                   style: TextStyle(
                                       color: const Color.fromRGBO(
                                           27, 27, 33, 0.25),
-                                      fontSize: ScreenUtil().setSp(16)),
+                                      fontSize: 16.sp),
                                 )),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -137,7 +122,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                                 Text('其他登录方式',
                                     style: TextStyle(
                                         color: const Color(0xFF5c5b5b),
-                                        fontSize: ScreenUtil().setSp(12))),
+                                        fontSize: 12.sp)),
                                 const Padding(
                                     padding: EdgeInsets.only(left: 8, top: 3),
                                     child: Image(

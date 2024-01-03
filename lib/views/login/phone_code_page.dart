@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:async';
-import "../../components/guide_page_comp.dart";
-import "../../components/input.dart";
+import "package:life_app/components/guide_page_comp.dart";
+import "package:life_app/components/input.dart";
+import "package:life_app/components/login.dart";
+import "package:life_app/routes.dart";
 
 class PhoneCode extends StatefulWidget {
-  const PhoneCode({super.key});
+  const PhoneCode({super.key, required arguments});
 
   @override
   State<PhoneCode> createState() => _PhoneCodeState();
@@ -22,7 +23,7 @@ class _PhoneCodeState extends State<PhoneCode> {
 
   void onChangeTap() {
     print('免密登录');
-    Navigator.pushReplacementNamed(context, '/account_number_login');
+    Navigator.pushReplacementNamed(context, AppRouter.accountNumberLogin);
   }
 
   onFocusChange() {
@@ -35,15 +36,6 @@ class _PhoneCodeState extends State<PhoneCode> {
         _fieldTwo.text.isNotEmpty &&
         _fieldThree.text.isNotEmpty &&
         _fieldFour.text.isNotEmpty) {
-      Fluttertoast.showToast(
-          msg: '登录成功',
-          gravity: ToastGravity.CENTER,
-          toastLength: Toast.LENGTH_LONG, //值针对 android 平台
-          timeInSecForIosWeb: 2, //提示时间 针对ios 和 web
-          backgroundColor: Colors.black, //背景颜色
-          textColor: Colors.white, //文本颜色
-          fontSize: 16.0 //文本字体大小
-          );
       Timer timer = Timer(const Duration(seconds: 2), () {
         print('延时');
         // Navigator.of(context)
@@ -64,54 +56,31 @@ class _PhoneCodeState extends State<PhoneCode> {
               alignment: Alignment.topLeft,
               fit: StackFit.expand,
               children: [
-                Positioned(
-                    left: -170,
-                    top: -170,
-                    child: Image(
-                      width: ScreenUtil().setWidth(484),
-                      height: ScreenUtil().setHeight(479),
-                      image: const AssetImage(
-                          'lib/assets/images/login_dayuan_bg.png'),
-                    )),
-                Positioned(
-                    bottom: -70,
-                    right: -70,
-                    child: Image(
-                      width: ScreenUtil().setWidth(231),
-                      height: ScreenUtil().setHeight(229),
-                      image: const AssetImage(
-                          'lib/assets/images/login_xiaoyuan_bg.png'),
-                    )),
+                const LeftTopBackground(),
+                const RightBottomBackground(),
                 Column(
                   children: [
                     GuideTopNavigator(
-                      textContent: '密码登录',
-                      onPressed: onChangeTap,
-                    ),
+                        textContent: '密码登录', onPressed: onChangeTap, top: 50),
                     Padding(
-                        padding: EdgeInsets.only(
-                            left: 33, top: ScreenUtil().setHeight(100)),
+                        padding: EdgeInsets.only(left: 33, top: 100.h),
                         child: Row(
                           children: [
                             Text(
                               '输入验证码',
                               style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(33),
-                                  fontWeight: FontWeight.w700),
+                                  fontSize: 33.sp, fontWeight: FontWeight.w700),
                             ),
                           ],
                         )),
                     Padding(
-                        padding: EdgeInsets.only(
-                            top: ScreenUtil().setHeight(70),
-                            left: 33,
-                            right: 33),
+                        padding:
+                            EdgeInsets.only(top: 70.h, left: 33, right: 33),
                         child: Column(
                           children: [
                             Padding(
-                                padding: EdgeInsets.only(
-                                    top: ScreenUtil().setHeight(100),
-                                    bottom: ScreenUtil().setHeight(24)),
+                                padding:
+                                    EdgeInsets.only(top: 100.h, bottom: 24.h),
                                 child: Row(children: [
                                   Text(
                                     // "验证码已发送至${args["phoneNumber"]}",
@@ -119,7 +88,7 @@ class _PhoneCodeState extends State<PhoneCode> {
                                     style: TextStyle(
                                         color: const Color(0xff1b1b21),
                                         fontWeight: FontWeight.w500,
-                                        fontSize: ScreenUtil().setSp(16)),
+                                        fontSize: 16.sp),
                                   )
                                 ])),
                             Row(children: [
@@ -156,28 +125,15 @@ class _PhoneCodeState extends State<PhoneCode> {
                                 onFocusChange: onFocusChange,
                               )
                             ]),
-                            // Opacity(
-                            //     opacity: 1,
-                            //     child: ElevatedButton(
-                            //         style: ElevatedButton.styleFrom(
-                            //             foregroundColor: Colors.white,
-                            //             backgroundColor: const Color.fromRGBO(
-                            //                 255, 86, 120, 1),
-                            //             fixedSize: Size(
-                            //                 ScreenUtil().setWidth(331),
-                            //                 ScreenUtil().setHeight(52))),
-                            //         onPressed: onSubmit,
-                            //         child: const Text('获取验证码'))),
                             Padding(
-                                padding: EdgeInsets.only(
-                                    top: ScreenUtil().setHeight(190),
-                                    bottom: ScreenUtil().setHeight(14)),
+                                padding:
+                                    EdgeInsets.only(top: 190.h, bottom: 14.h),
                                 child: Text(
                                   'or',
                                   style: TextStyle(
                                       color: const Color.fromRGBO(
                                           27, 27, 33, 0.25),
-                                      fontSize: ScreenUtil().setSp(16)),
+                                      fontSize: 16.sp),
                                 )),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -186,7 +142,7 @@ class _PhoneCodeState extends State<PhoneCode> {
                                 Text('其他登录方式',
                                     style: TextStyle(
                                         color: const Color(0xFF5c5b5b),
-                                        fontSize: ScreenUtil().setSp(12))),
+                                        fontSize: 12.sp)),
                                 const Padding(
                                     padding: EdgeInsets.only(left: 8, top: 3),
                                     child: Image(

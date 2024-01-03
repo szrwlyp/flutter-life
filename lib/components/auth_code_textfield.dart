@@ -25,7 +25,8 @@ class AuthCodeTextfield extends StatefulWidget {
   final Color itemBottomLineColor;
   final double cursorWidth; //光标宽，如果宽>高，会是一个水平的光标，如果宽<高，就是常规竖直的光标
   final double cursorHeight; //光标高
-  final double? cursorBottomOffset; //cursor bottom offset, if nil default is center
+  final double?
+      cursorBottomOffset; //cursor bottom offset, if nil default is center
   final Color cursorColor;
   final Color textColor;
   final FontWeight? fontWeight;
@@ -37,7 +38,7 @@ class AuthCodeTextfield extends StatefulWidget {
   final FocusNode? focusNode;
   final TextEditingController? controller;
 
-  AuthCodeTextfield(
+  const AuthCodeTextfield(
       {Key? key,
       this.length = AuthCodeLength.four,
       this.mode = AuthCodeMode.singleItem,
@@ -55,21 +56,21 @@ class AuthCodeTextfield extends StatefulWidget {
       this.fontSize = 25,
       this.borderWidth = 0.0,
       this.borderColor = Colors.grey,
-      this.onChanged, 
-      this.cursorBottomOffset, 
-      this.fontWeight, 
-      this.autofocus = true, 
-      this.focusNode, 
+      this.onChanged,
+      this.cursorBottomOffset,
+      this.fontWeight,
+      this.autofocus = true,
+      this.focusNode,
       this.controller})
       : super(key: key);
 
   @override
-  _AuthCodeTextfieldState createState() => _AuthCodeTextfieldState();
+  State createState() => _AuthCodeTextfieldState();
 }
 
 class _AuthCodeTextfieldState extends State<AuthCodeTextfield> {
   String inputText = '';
-  FocusNode _currentFocus = FocusNode();
+  final FocusNode _currentFocus = FocusNode();
   bool _visibleCursor = false;
   Timer? _timer;
 
@@ -91,8 +92,10 @@ class _AuthCodeTextfieldState extends State<AuthCodeTextfield> {
           height: widget.itemHeight,
           child: Text(
             s,
-            style:
-                TextStyle(fontSize: widget.fontSize, color: widget.textColor, fontWeight: widget.fontWeight),
+            style: TextStyle(
+                fontSize: widget.fontSize,
+                color: widget.textColor,
+                fontWeight: widget.fontWeight),
           ),
         ),
       );
@@ -167,15 +170,15 @@ class _AuthCodeTextfieldState extends State<AuthCodeTextfield> {
 
   @override
   void initState() {
-    _timer = Timer.periodic(Duration(milliseconds: 650), (Timer timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 650), (Timer timer) {
       _visibleCursor = !_visibleCursor;
       setState(() {});
     });
-    widget.controller?.addListener(() { 
+    widget.controller?.addListener(() {
       if (widget.controller?.text != null) {
         widget.onChanged?.call(widget.controller!.text);
         setState(() {
-            inputText = widget.controller!.text;
+          inputText = widget.controller!.text;
         });
       }
     });
@@ -219,19 +222,21 @@ class _AuthCodeTextfieldState extends State<AuthCodeTextfield> {
               enableInteractiveSelection: false,
               controller: widget.controller,
               autofocus: widget.autofocus,
-              focusNode: widget.focusNode != null ? widget.focusNode : _currentFocus,
+              focusNode: widget.focusNode ?? _currentFocus,
               showCursor: false,
               inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.digitsOnly,
                 LengthLimitingTextInputFormatter(getNumLenth())
               ],
-              decoration: InputDecoration(
-                border: InputBorder.none,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                ),
                 counterText: '',
               ),
               maxLength: getNumLenth(),
               keyboardType: TextInputType.number,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16.0,
                 color: Colors.transparent,
               ),

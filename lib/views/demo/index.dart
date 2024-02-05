@@ -41,7 +41,8 @@ class _IndexState extends State<DemoIndex> {
             padding: const EdgeInsets.only(top: 100, bottom: 30),
             child: ElevatedButton(
                 onPressed: () async {
-                  await callNativeMethod('__UNI__359FE36');
+                  await callNativeMethod('__UNI__0A27FD0');
+                  // await callNativeMethod('__UNI__359FE36');
                 },
                 style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,

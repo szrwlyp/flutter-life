@@ -1,16 +1,7 @@
-# life_app
+## Flutter demo
 
-A new Flutter project.
+这是自学 Flutter 框架的项目仓库。在即时设计上找了个免费的设计稿，按照设计稿画页面（Widget）和样式。同时还集成了关于智慧楼层的 Uni 小程序项目，[链接 🔗](https://blog.csdn.net/LYP_0320/article/details/135216034)
 
-## Getting Started
+## 功能 GIF
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![功能效果gif](https://github.com/szrwlyp/flutter-life/blob/master/tinywow_852_1715586891_55673528.gif)

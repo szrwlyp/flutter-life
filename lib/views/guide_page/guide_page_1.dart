@@ -1,6 +1,8 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:life_app/components/guide_page_comp.dart';
+import 'package:life_app/http/core/hi_net.dart';
+import 'package:life_app/http/request/test_request.dart';
 import "package:life_app/widgets/will_pop_scope_route.dart";
 import "package:life_app/routes.dart";
 
@@ -82,8 +84,13 @@ class _GuidePage1State extends State<GuidePage1> {
         AppRouter.accountNumberLogin, (route) => false);
   }
 
-  onNextTap() {
-    Navigator.of(context)
-        .pushNamed(AppRouter.guidePage2, arguments: {'phoneNumber': 155});
+  onNextTap() async {
+    // Navigator.of(context)
+    //     .pushNamed(AppRouter.guidePage2, arguments: {'phoneNumber': 155});
+
+    TestRequest request = TestRequest();
+    request.add('add', 'ddd').add('bbb', 'cccc');
+    var result = await HiNet.getInstance().fire(request);
+    print(result);
   }
 }
